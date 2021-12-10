@@ -1,0 +1,32 @@
+---
+- hosts: all
+  become: true
+  become_user: root
+  remote_user: vagrant
+  gather_facts: false
+  tasks:
+    - name: "check ssh"
+      become: false
+      wait_for:
+        port: 22
+        delay: 5
+        connect_timeout: 5
+        timeout: 360
+        host: "{{ ansible_host }}"
+      delegate_to: localhost
+
+    - name: "make ssh root dir"
+      file:
+        state: directory
+        mode: 0700
+        dest: /root/.ssh/
+        owner: root
+
+    - name: "copy user rsa public key"
+      copy:
+        src: ssh/ansible_rsa.pub
+        dest: /root/.ssh/authorized_keys
+        owner: root
+        mode: 0600
+      register: rsa
+      ignore_errors: true
