@@ -1,0 +1,10 @@
+---
+- hosts: ubuntu
+  become: true
+  gather_facts: false
+  tasks:
+    - name: "Install git"
+      ansible.builtin.apt:
+        name: git
+        state: latest
+        update_cache: yes

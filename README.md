@@ -24,3 +24,9 @@
 
 ### Run playbook-mysql.yml onto host0
 ```$ ansible-playbook -i ansible/hosts ansible/playbook-mysql.yml -l host0```
+
+### Restart nginx.service onto host0
+```$ ansible -b -i ansible/hosts -m service -a 'name=nginx state=restarted' host0```
+
+### Install git onto host0
+```$ ansible-playbook -i ansible/hosts ansible/playbook-git.yml -l host0```
