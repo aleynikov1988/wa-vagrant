@@ -21,3 +21,6 @@
 
 ### Run playbook-nginx.yml onto host0
 ```$ ansible-playbook -i ansible/hosts -l host0 ansible/playbook-nginx.yml```
+
+### Run playbook-mysql.yml onto host0
+```$ ansible-playbook -i ansible/hosts ansible/playbook-mysql.yml -l host0```

@@ -1,0 +1,13 @@
+---
+- hosts: ubuntu
+  become: true
+  gather_facts: true
+  tasks:
+    - name: "Install mysql"
+      ansible.builtin.apt:
+        name: "{{item}}"
+        state: latest
+        update_cache: yes
+      with_items:
+        - mysql-server
+        - mysql-client
