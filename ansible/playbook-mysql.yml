@@ -5,7 +5,7 @@
   tasks:
     - name: "Install mysql"
       ansible.builtin.apt:
-        name: "{{item}}"
+        name: "{{ item }}"
         state: latest
         update_cache: yes
       with_items:

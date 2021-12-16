@@ -4,4 +4,4 @@ host1 ansible_host=192.168.33.11 ansible_user=vagrant
 host2 ansible_host=192.168.33.12 ansible_user=vagrant
 
 [all:vars]
-ansible_ssh_private_key_file=ubuntu2004/.vagrant/machines/{{ inventory_hostname }}/libvirt/private_key
+ansible_ssh_private_key_file=../ubuntu2004/.vagrant/machines/{{ inventory_hostname }}/libvirt/private_key

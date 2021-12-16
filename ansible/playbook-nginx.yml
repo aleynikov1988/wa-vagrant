@@ -13,19 +13,18 @@
       ansible.builtin.copy:
         src: etc/nginx/default.conf
         dest: /etc/nginx/conf.d/default.conf
-      notify:
-      - "Restart nginx"
+      notify: "reload nginx"
 
     - name: "Copy index.html page"
       ansible.builtin.copy:
-        src: files/html/index.html
+        src: files/www/html/index.html
         dest: /var/www/html
         owner: vagrant
         group: vagrant
         mode: 0644
 
   handlers:
-    - name: "Restart nginx"
+    - name: "reload nginx"
       ansible.builtin.service:
         name: nginx
-        state: restarted
+        state: reloaded
