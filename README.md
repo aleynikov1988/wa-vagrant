@@ -30,3 +30,6 @@
 
 ### Install git onto host0
 ```$ ansible-playbook -i ansible/hosts ansible/playbook-git.yml -l host0```
+
+### Install php onto host0
+```$ ansible-playbook -l host0 playbook-php.yml```
