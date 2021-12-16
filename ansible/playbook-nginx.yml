@@ -16,9 +16,9 @@
       notify:
       - "Restart nginx"
 
-    - name: "Copy wa-vagrant.html page"
+    - name: "Copy index.html page"
       ansible.builtin.copy:
-        src: files/html/wa-vagrant.html
+        src: files/html/index.html
         dest: /var/www/html
         owner: vagrant
         group: vagrant
