@@ -4,7 +4,8 @@
 hosts = {
   "host0" => "192.168.33.10",
   "host1" => "192.168.33.11",
-  "host2" => "192.168.33.12"
+  "host2" => "192.168.33.12",
+  "host3" => "192.168.33.13"
 }
 
 # All Vagrant configuration is done below. The "2" in Vagrant.configure

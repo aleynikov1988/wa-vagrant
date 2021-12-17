@@ -1,13 +1,44 @@
 ---
 - hosts: ubuntu
   become: true
-  gather_facts: true
+  gather_facts: false
+  vars_files:
+    - vars/default.yml
+
   tasks:
-    - name: "Install mysql"
+    - name: "Install mysql-server"
+      ansible.builtin.apt:
+        name: "mysql-server-{{ mysql_version }}"
+        state: fixed
+        update_cache: yes
+
+    - name: "Install python3 packages"
       ansible.builtin.apt:
         name: "{{ item }}"
         state: latest
         update_cache: yes
       with_items:
-        - mysql-server
-        - mysql-client
+        - python3-pymysql
+        - python3-mysqldb
+
+    - name: "Sets the root password"
+      community.mysql.mysql_user:
+        name: root
+        password: "{{ mysql_root_password }}"
+        check_implicit_admin: true
+        login_unix_socket: /var/run/mysqld/mysqld.sock
+
+    - name: "Removes all anonymous user accounts"
+      community.mysql.mysql_user:
+       name: ""
+       host_all: yes
+       state: absent
+       login_user: root
+       login_password: "{{ mysql_root_password }}"
+
+    - name: "Removes the MySQL test database"
+      community.mysql.mysql_db:
+       name: test
+       state: absent
+       login_user: root
+       login_password: "{{ mysql_root_password }}"

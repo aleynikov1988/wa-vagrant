@@ -1,7 +1,10 @@
 ---
 - hosts: ubuntu
   become: true
-  gather_facts: true
+  gather_facts: false
+  vars_files:
+    - vars/default.yml
+
   tasks:
     - name: "Add repository ondrej/php"
       ansible.builtin.apt_repository:
@@ -9,27 +12,34 @@
 
     - name: "Install php"
       ansible.builtin.apt:
-        name: php8.1
+        name: "php{{ php_version }}-fpm"
         state: fixed
         update_cache: yes
 
     - name: "Install php extensions"
       ansible.builtin.apt:
-        name: "php8.1-{{ item }}"
+        name: "php{{ php_version }}-{{ item }}"
         update_cache: yes
       with_items:
-       - fpm
        - mysql
        - curl
 
-    - name: "Copy php-fpm config"
+    - name: "Copy www config"
       ansible.builtin.copy:
-        src: etc/php/fpm/php.ini
-        dest: /etc/php/8.1/fpm/php.ini
+        src: files/etc/php/fpm/www.conf
+        dest: "/etc/php/{{ php_version }}/fpm/pool.d/www.conf"
       notify: "reload php-fpm"
+
+    - name: "Copy php info page"
+      ansible.builtin.copy:
+        src: files/www/info.php
+        dest: /var/www/html
+        owner: vagrant
+        group: vagrant
+        mode: 0644
 
   handlers:
     - name: "reload php-fpm"
       ansible.builtin.service:
-        name: php8.1-fpm
+        name: "php{{ php_version }}-fpm"
         state: reloaded

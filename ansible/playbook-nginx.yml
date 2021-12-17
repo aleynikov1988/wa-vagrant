@@ -1,24 +1,33 @@
 ---
 - hosts: ubuntu
   become: true
-  gather_facts: true
+  gather_facts: false
+  vars_files:
+    - vars/default.yml
+
   tasks:
     - name: "Install nginx"
       ansible.builtin.apt:
-        name: nginx=1.18.0-0ubuntu1.2
+        name: "nginx={{ nginx_version }}"
         state: fixed
         update_cache: yes
 
     - name: "Copy nginx config"
-      ansible.builtin.copy:
-        src: etc/nginx/default.conf
-        dest: /etc/nginx/conf.d/default.conf
+      ansible.builtin.template:
+        src: files/etc/nginx/default.conf.j2
+        dest: /etc/nginx/sites-available/default
+
+    - name: "Enable new site"
+      ansible.builtin.file:
+        src: /etc/nginx/sites-available/default
+        dest: /etc/nginx/sites-enabled/default
+        state: link
       notify: "reload nginx"
 
     - name: "Copy index.html page"
-      ansible.builtin.copy:
-        src: files/www/html/index.html
-        dest: /var/www/html
+      ansible.builtin.template:
+        src: files/www/html/index.html.j2
+        dest: /var/www/html/index.html
         owner: vagrant
         group: vagrant
         mode: 0644
@@ -28,3 +37,8 @@
       ansible.builtin.service:
         name: nginx
         state: reloaded
+
+    - name: "restart nginx"
+      ansible.builtin.service:
+        name: nginx
+        state: restarted
