@@ -33,3 +33,6 @@
 
 ### Install php onto host0
 ```$ ansible-playbook -l host0 playbook-php.yml```
+
+### Run master playbook onto host1
+```$ ansible-playbook -l host1 playbook-master.yml```

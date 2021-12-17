@@ -1,0 +1,6 @@
+---
+- import_playbook: playbook-ssh.yml
+- import_playbook: playbook-nginx.yml
+- import_playbook: playbook-mysql.yml
+- import_playbook: playbook-php.yml
+- import_playbook: playbook-git.yml
